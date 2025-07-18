@@ -80,7 +80,8 @@ public class Student {
                 System.out.println("<1> Math");
                 System.out.println("<2> English");
                 System.out.println("<3> Science");
-                System.out.print("Select Subject: ");
+                System.out.println("<0> Exit");
+                System.out.print("Select: ");
                 subjectOpt = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("Something Went Wrong!");
@@ -94,39 +95,103 @@ public class Student {
                     break;
                 case 3: selectedSubject = "SCIENCE";
                     break;
+                case 0:
+                    System.out.println("Returning to Main Menu...");
+                    logResultsMenuRunning = false;
+                    break;
                 default:
                     System.out.println("Invalid Selection!");
+
             }
-            System.out.println("Selected "+selectedSubject);
-            System.out.print("Enter Number of Tests/Exams: ");
-            int numOfTests = sc.nextInt();
-            sc.nextLine();
-            int counter = 1, total = 0, finalTotal = 0;
-            double markReceived = 0.0, average = 0.0, percentage = 0.0;
-            while ( counter <= numOfTests ) {
-                System.out.println("Enter Test/Exam "+counter+" Total: ");
-                total = sc.nextInt();
-                System.out.println("Enter Mark Received: ");
-                markReceived = sc.nextDouble();
-                percentage = ( ( markReceived / total ) * 100 );
-                finalTotal += total;
-                average += percentage;
-                counter++;
+            if ( subjectOpt != 0 ) {
+
+                System.out.println("Selected "+selectedSubject);
+                System.out.print("Enter Number of Tests/Exams: ");
+                int numOfTests = sc.nextInt();
+                sc.nextLine();
+                int counter = 1, total = 0, finalTotal = 0;
+                double markReceived = 0.0, average = 0.0, percentage = 0.0;
+                while ( counter <= numOfTests ) {
+                    System.out.print("Enter Test/Exam "+counter+" Total: ");
+                    total = sc.nextInt();
+                    System.out.print("Enter Mark Received: ");
+                    markReceived = sc.nextDouble();
+                    percentage = ( ( markReceived / total ) * 100 );
+                    finalTotal += total;
+                    average += percentage;
+                    counter++;
+                }
+                average = (average / numOfTests);
+                if ( average < 50.0 ) {
+                    gradeLevel = "Fail";
+                } else if ( average >= 50.00 && average < 75.00 ) {
+                    gradeLevel = "Pass";
+                } else if ( average >= 75 ) {
+                    gradeLevel = "Distinction";
+                }
+                Subjects newSubject = new Subjects(selectedSubject, gradeLevel, average, finalTotal);
+                subjects.add(newSubject);
             }
-            if ( average < 50.0 ) {
-                gradeLevel = "Fail";
-            } else if ( average >= 50.00 && average < 75.00 ) {
-                gradeLevel = "Pass";
-            } else if ( average >= 75 ) {
-                gradeLevel = "Distinction";
-            }
-            Subjects newSubject = new Subjects(selectedSubject, gradeLevel, average, finalTotal);
-            subjects.add(newSubject);
+
         }
 
     }
+    public static void seeAverage(){
+        boolean seeAverageMenuRunning = true;
+        int option = 0;
+        String selectedSubject = "";
+        while ( seeAverageMenuRunning ) {
+
+
+            try {
+                System.out.println("<1> Math");
+                System.out.println("<2> English");
+                System.out.println("<3> Science");
+                System.out.println("<0> Exit");
+                System.out.print("Select: ");
+                option = sc.nextInt();
+                sc.nextLine();
+            } catch (Exception e) {
+                System.out.println("Something Went Wrong");
+                throw new RuntimeException(e);
+            }
+
+            switch ( option ) {
+                case 1: selectedSubject = "MATH";
+                    break;
+                case 2: selectedSubject = "ENGLISH";
+                    break;
+                case 3: selectedSubject = "SCIENCE";
+                    break;
+                case 0:
+                    System.out.println("Returning to Main Menu...");
+                    seeAverageMenuRunning = false;
+                    break;
+                default:
+                    System.out.println("Error!");
+                    seeAverageMenuRunning = false;
+            }
+
+            boolean found = false;
+            if (subjects.isEmpty())
+                System.out.println("No Subjects Logged.");
+            else{
+                for (Subjects s : subjects){
+                    if ( selectedSubject.equalsIgnoreCase(s.getSubject()) ) {
+                        System.out.println("Average for "+selectedSubject+": "+(Math.round(s.getAverage() * 100.0)/100.0)+"%");
+                    } else if( !found ) {
+                        System.out.println("Subject Result Not Found");
+                    }
+                }
+            }
+        }
+
+    }
+    public static void addSubject(){
+        System.out.println("FEATURE COMING SOON!!");
+    }
     @Override
     public String toString(){
-        return "Name: "+name+"\nSurname: "+surname;
+        return "Name: "+name+"\nSurname: "+surname+"\n===============";
     }
 }
