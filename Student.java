@@ -178,7 +178,7 @@ public class Student {
             else{
                 for (Subjects s : subjects){
                     if ( selectedSubject.equalsIgnoreCase(s.getSubject()) ) {
-                        System.out.println("Average for "+selectedSubject+": "+(Math.round(s.getAverage() * 100.0)/100.0)+"%");
+                        System.out.println("Average for "+selectedSubject+": "+(Math.round(s.getAverage() * 100.0)/100.0)+"%"+"\nGrade Level: "+s.getGradeLevel());
                     } else if( !found ) {
                         System.out.println("Subject Result Not Found");
                     }
